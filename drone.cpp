@@ -8,7 +8,6 @@
 #include <vector>
 #include <iomanip>
 #include <iostream>
-#include <sstream>
 #include "mode.h"
 using namespace std;
 
@@ -102,10 +101,12 @@ void getMode(int argc, char *argv[], Options &opt)
 // This function is already done.
 int main(int argc, char *argv[])
 {
+    cout << setprecision(2); // Always show 2 decimal places
+    cout << fixed; // Disable scientific notation for large numbers
+
     Options opt;
     getMode(argc, argv, opt);
-    A m;
-    m.entries = readInput();
+    A m(readInput());
     m.printOutput();
     return 0;
 

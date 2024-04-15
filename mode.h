@@ -56,8 +56,8 @@ class A {
 private:
     double runningTotal = 0;
     vector<Prim> prim;
-public:
-    vector<Point> entries;   
+    vector<Point> entries;
+public:   
     void solveMST() {
     // Prim's algorithm
         prim.resize(entries.size());
@@ -88,39 +88,14 @@ public:
     }
     void printOutput() {
         solveMST();
-        // print runningTotal - 2 decimal precision
+        // print runningTotal - 2 decimal precision dealt with in main
         cout << runningTotal << endl;
         // print each node
         for (size_t i = 1; i < entries.size(); i++) {
             cout << min(i, prim[i].P)  << " " << max(i , prim[i].P) << "\n";
         }
     }
+    A(vector<Point> e)
+        : entries(e)
+    {}
 };
-
-// read input
-    // N vertices
-    // N ordered pairs int int
-
-
-
-// Part A: MST mode
-// error check: if vertex on main campus and medical campus and no border vertex, cerr << Cannot construct MST” << endl;\
-// doesn't need to worry ab normal, main, medical, etc
-// helper for calculating distance that returns infinity if the connection is impossible (ex. main to medical)
-// MST algorithm ignores it if the distance returned is infinity
-// When reading input, store locationType (enum)
-// seperate struct for PRIM table which can be resized
-
-// it's ok to store x and y as int, but convert to double during distance calculation
-
-// Part B
-// Heuristics TSP
-// O(n^2)
-// greedy nearest neighbor
-// 2 - opt
-
-
-// Part C
-// make it a class
-// genPerms() member function only pass size_t permLength
-// double runnningTotal
