@@ -11,34 +11,32 @@
 #include "mode.h"
 using namespace std;
 
-enum mode {
+enum Mode {
     NONE,
     MST,
     FASTTSP,
     OPTTSP,
 };
 struct Options {
-    mode m = mode::NONE;
+    Mode m = Mode::NONE;
 };
 
-vector<Point> readInput() {
+vector<Point> readInput(Options& opt) {
     size_t numVertices = 0;
     cin >> numVertices;
 
     vector<Point> points(numVertices);
     for (size_t i = 0; i < numVertices; ++i) {
         cin >> points[i].x >> points[i].y;
-        setLocation(points[i]);
+        if (opt.m == MST) setLocation(points[i]);
     }
 
     return points;
 };
 
 void printHelp(char *argv[]) {
-    cout << "Usage: " << argv[0] << " [-m resize|reserve|nosize] | -h\n";
-    cout << "This program is to help you learn command-line processing,\n";
-    cout << "reading data into a vector, the difference between resize and\n";
-    cout << "reserve and how to properly read until end-of-file." << endl;
+    cout << "Usage: " << argv[0] << " [-m MST|FASTTSP|OPTTSP] | -h\n";
+    cout << "< inputFile\n";
 } // printHelp()
 
 void getMode(int argc, char *argv[], Options &opt)
@@ -68,11 +66,11 @@ void getMode(int argc, char *argv[], Options &opt)
             if (optarg) {
                 std::string modeStr(optarg);
                 if (modeStr == "MST")
-                    opt.m = mode::MST;
+                    opt.m = Mode::MST;
                 else if (modeStr == "FASTTSP")
-                    opt.m = mode::FASTTSP;
+                    opt.m = Mode::FASTTSP;
                 else if (modeStr == "OPTTSP")
-                    opt.m = mode::OPTTSP;
+                    opt.m = Mode::OPTTSP;
                 else {
                     cerr << "Error: Invalid mode" << endl;
                     cout << "MODE: " << modeStr << endl;
@@ -92,7 +90,7 @@ void getMode(int argc, char *argv[], Options &opt)
         }
     }
     // Check if mode option is provided
-    if (opt.m == mode::NONE) {
+    if (opt.m == Mode::NONE) {
         cerr << "Error: No mode specified" << endl;
         exit(1);
     }
@@ -106,8 +104,30 @@ int main(int argc, char *argv[])
 
     Options opt;
     getMode(argc, argv, opt);
-    A m(readInput());
-    m.printOutput();
+    switch (opt.m)
+    {
+    case Mode::MST:
+        {
+        A m(readInput(opt));
+        m.printOutput();
+        break;
+        }
+    case Mode::FASTTSP:
+        {
+        // cout << "C RAN\n"; // for testing
+        B m(readInput(opt));
+        m.printOutput(); 
+        break;
+        }
+    case Mode::OPTTSP:
+        {
+        C m(readInput(opt));
+        m.printOutput(); 
+        break;
+        }
+    default:
+        break;
+    }
     return 0;
 
 } // main()
